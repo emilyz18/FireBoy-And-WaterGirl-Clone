@@ -1,7 +1,7 @@
 import pygame
 from world import *
 from character import *
-
+from world import World
 
 screen_width = 1020
 screen_height = 680
@@ -27,7 +27,8 @@ class Game:
         self.running = True
 
     def game_loop(self):
-        fire_boy = FireBoy(60, screen_height - 140)
+        water_girl = WaterGirl(50, screen_height - 140)
+        fire_boy = FireBoy(40, screen_height - 140)
         # world.load_images()
 
         while self.running:
@@ -37,9 +38,7 @@ class Game:
             world.draw_grid()
             world.draw_blocks(screen)
 
-
-
-
+            water_girl.move("wg")
             fire_boy.move("fb")
 
             for event in pygame.event.get():

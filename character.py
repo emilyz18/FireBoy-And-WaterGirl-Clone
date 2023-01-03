@@ -9,17 +9,21 @@ from world import World
 class Character:
     def __init__(self, x, y):
         self.y_momentum = 0
-        self.character = pygame.image.load("img/characterTemp.png")
+        self.fb = pygame.image.load("img/fireBoy.png")
+        self.wg = pygame.image.load("img/waterGirl.png")
 
-        self.rect = self.character.get_rect()
+        self.rect = self.wg.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.air_timer = 0
-        self.width = self.character.get_width()
-        self.height = self.character.get_height()
+        self.width = self.wg.get_width()
+        self.height = self.wg.get_height()
 
-    def draw(self):
-        game.screen.blit(self.character, self.rect)
+    # def draw(self):
+        # game.screen.blit(self.fb, self.rect)
+        # game.screen.blit(self.wg, self.rect)
+
+
 
     def move(self, type):
         dx = 0
@@ -31,17 +35,17 @@ class Character:
             controls = [key[pygame.K_a], key[pygame.K_d], key[pygame.K_w]]
 
         if controls[0]:  # left
-            dx -= 10
+            dx -= 8
         if controls[1]:  # right
-            dx += 10
+            dx += 8
         if controls[2]:  # jump
             if self.air_timer < 5:
-                self.y_momentum = -10
+                self.y_momentum = -12
 
         # add gravity
         self.y_momentum += 1
-        if self.y_momentum > 1112:
-            self.y_momentum = 1112
+        if self.y_momentum > 12:
+            self.y_momentum = 12
         dy += self.y_momentum
 
         bottom_collision = False
@@ -73,7 +77,11 @@ class Character:
         self.rect.x += dx
         self.rect.y += dy
 
-        game.screen.blit(self.character, self.rect)
+        if type == "fb":
+            game.screen.blit(self.fb, self.rect)
+        else:
+            game.screen.blit(self.wg, self.rect)
+
         pygame.draw.rect(game.screen, (255, 255, 255), self.rect, 2)
 
 
@@ -83,5 +91,5 @@ class FireBoy(Character):
 
 
 class WaterGirl(Character):
-    def __init__(self):
-        super()
+    def __init__(self, x, y):
+        super().__init__(x, y)
