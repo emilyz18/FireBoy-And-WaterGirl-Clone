@@ -2,6 +2,7 @@ import pygame
 
 import game
 from game import *
+from obstacle import *
 
 tile_size = 34
 
@@ -10,17 +11,26 @@ class World:
     blocks_displayed = []
 
     def __init__(self):
+        self.lava_group = pygame.sprite.Group()
+        self.water_group = pygame.sprite.Group()
+        self.slime_group = pygame.sprite.Group()
+        self.wall_group = pygame.sprite.Group()
         # global tile_size
 
         # 1, 2 ,3 top blocks
         # 4, 5, 6 bottom block variants
+        # 7 fire
+        # 8 water
+        # 9 slime
+        # 10 wall
+        # 11 button
         self.world_data = [
             [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],  # 0
             [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
             [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
             [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
             [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
-            [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+            [4, 0, 0, 0, 0, 0, 0, 11, 0, 0, 10, 0, 0, 11, 0 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
             [6, 0, 0, 0, 0, 0, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 0, 0, 6],
 
             [5, 0, 0, 0, 0, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 0, 0, 5],
@@ -30,7 +40,7 @@ class World:
 
             [6, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
             [5, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
-            [4, 5, 6, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 7, 7, 3, 1, 8, 8, 1, 2, 3, 1, 0, 0, 0, 0, 0, 0, 4],
+            [4, 5, 6, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 7, 7, 3, 1, 8, 8, 1, 9, 9, 1, 0, 0, 0, 0, 0, 0, 4],
 
             [6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 0, 0, 0, 0, 0, 6],
 
@@ -53,8 +63,8 @@ class World:
         self.block_bottom = pygame.image.load("img/blockBottom.png")  # bottom dirt varient 1
         self.block_bottom2 = pygame.image.load("img/blockBottom2.png")  # bottom dirt varient 2
         self.block_bottom3 = pygame.image.load("img/blockBottom3.png")  # bottom dirt varient 3
-        self.lava_img = pygame.image.load("img/lava.png")
-        self.water_img = pygame.image.load("img/water.png")
+        self.wall = pygame.image.load("img/wall.png")
+        self.buttom = pygame.image.load("img/button.png")
 
     # def draw_grid(self, screen, s_w, s_h):
     #     for line in range(0, 30):
@@ -65,15 +75,19 @@ class World:
 
     def draw_grid(self):
         for line in range(0, 30):
-            pygame.draw.line(game.screen, (255, 255, 255), (line * tile_size, 0), (line * tile_size, game.screen_height))
+            pygame.draw.line(game.screen, (255, 255, 255), (line * tile_size, 0),
+                             (line * tile_size, game.screen_height))
 
             for line2 in range(0, 20):
-                pygame.draw.line(game.screen, (255, 255, 255), (0, line2 * tile_size), (game.screen_width, line2 * tile_size))
+                pygame.draw.line(game.screen, (255, 255, 255), (0, line2 * tile_size),
+                                 (game.screen_width, line2 * tile_size))
 
     def draw_blocks(self, screen):
         World.blocks_displayed.clear()
+
         row_count = 0
-        for row in self.world_data:
+
+a        for row in self.world_data:
             col_count = 0
             for tile in row:
                 if tile == 1:
@@ -119,22 +133,35 @@ class World:
                     screen.blit(img, img_rect)
                     World.blocks_displayed.append(img_rect)
                 if tile == 7:
-                    img = pygame.transform.scale(self.lava_img, (tile_size, tile_size - 8))
-                    img_rect = img.get_rect()
-
-                    img_rect.x = col_count * tile_size
-                    img_rect.y = row_count * tile_size + 8
-                    screen.blit(img, (img_rect.x, img_rect.y))
-                    # pygame.draw.rect(screen, (255, 255, 255), img_rect, 2)
+                    lava = Lava(col_count * tile_size, row_count * tile_size + 8)
+                    self.lava_group.add(lava)
+                    lava.draw(self.lava_group, screen)
                 if tile == 8:
-                    img = pygame.transform.scale(self.water_img, (tile_size, tile_size - 8))
-                    img_rect = img.get_rect()
+                    water = Water(col_count * tile_size, row_count * tile_size + 8)
+                    self.water_group.add(water)
+                    water.draw(self.water_group, screen)
+                if tile == 9:
+                    slime = Slime(col_count * tile_size, row_count * tile_size + 8)
+                    self.slime_group.add(slime)
+                    slime.draw(self.slime_group, screen)
+                if tile == 10:
+                    # wall = Wall(col_count * tile_size, row_count * tile_size - 34)
+                    # self.wall_group.add(wall)
+                    # wall.draw(self.wall_group, screen)
+                    # # World.blocks_displayed.append(wall.get_rect())
 
+                    img = pygame.transform.scale(self.wall, (tile_size - 12, tile_size * 2))
+                    img_rect = img.get_rect()
                     img_rect.x = col_count * tile_size
-                    img_rect.y = row_count * tile_size + 8
-                    screen.blit(img, (img_rect.x, img_rect.y))
-                        # pygame.draw.rect(screen, (255, 255, 255), img_rect, 2)
-                    World.blocks_displayed.append(img_rect)
+                    img_rect.y = row_count * tile_size
+                    screen.blit(img, (img_rect.x, img_rect.y - 34))
+
+                if tile == 11:
+                    img = pygame.transform.scale(self.buttom, (tile_size + 4, tile_size / 2 - 2))
+                    img_rect = img.get_rect()
+                    img_rect.x = col_count * tile_size
+                    img_rect.y = row_count * tile_size
+                    screen.blit(img, (img_rect.x + 4, img_rect.y + tile_size / 2 + 2))
+                    # World.blocks_displayed.append(img_rect)
                 col_count += 1
             row_count += 1
-            print(len(World.blocks_displayed))

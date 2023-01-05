@@ -28,7 +28,7 @@ class Game:
 
     def game_loop(self):
         water_girl = WaterGirl(50, screen_height - 140)
-        fire_boy = FireBoy(40, screen_height - 140)
+        fire_boy = FireBoy(50, screen_height - 140)
         # world.load_images()
 
         while self.running:
