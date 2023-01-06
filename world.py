@@ -1,20 +1,28 @@
 import pygame
 
-import game
-from game import *
 from obstacle import *
+from character import *
+# from push import *
 
 tile_size = 34
 
 
 class World:
     blocks_displayed = []
+    purple_button = []
+
+    p_block = []
 
     def __init__(self):
+        self.block_x = 34 * 4
         self.lava_group = pygame.sprite.Group()
         self.water_group = pygame.sprite.Group()
         self.slime_group = pygame.sprite.Group()
         self.wall_group = pygame.sprite.Group()
+        self.purple_button_pressed = False
+
+
+        # self.purple_button = []
         # global tile_size
 
         # 1, 2 ,3 top blocks
@@ -30,7 +38,7 @@ class World:
             [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
             [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
             [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
-            [4, 0, 0, 0, 0, 0, 0, 11, 0, 0, 10, 0, 0, 11, 0 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+            [4, 0, 0, 0, 0, 0, 0, 11, 0, 0, 10, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
             [6, 0, 0, 0, 0, 0, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 0, 0, 6],
 
             [5, 0, 0, 0, 0, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 0, 0, 5],
@@ -48,7 +56,7 @@ class World:
             [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
 
             [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4],
-            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 6, 4],
+            [6, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 6, 4],
             [5, 2, 3, 1, 2, 3, 1, 2, 3, 7, 7, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 5, 6, 4, 5],
             [4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6],  # 15
 
@@ -65,6 +73,7 @@ class World:
         self.block_bottom3 = pygame.image.load("img/blockBottom3.png")  # bottom dirt varient 3
         self.wall = pygame.image.load("img/wall.png")
         self.buttom = pygame.image.load("img/button.png")
+        self.block = pygame.image.load("img/block.png")
 
     # def draw_grid(self, screen, s_w, s_h):
     #     for line in range(0, 30):
@@ -73,23 +82,36 @@ class World:
     #         for line2 in range(0, 20):
     #             pygame.draw.line(screen, (255, 255, 255), (0, line2 * tile_size), (s_w, line2 * tile_size))
 
-    def draw_grid(self):
+    def draw_grid(self, screen, w, h):
         for line in range(0, 30):
-            pygame.draw.line(game.screen, (255, 255, 255), (line * tile_size, 0),
-                             (line * tile_size, game.screen_height))
+            pygame.draw.line(screen, (255, 255, 255), (line * tile_size, 0),
+                             (line * tile_size, h))
 
             for line2 in range(0, 20):
-                pygame.draw.line(game.screen, (255, 255, 255), (0, line2 * tile_size),
-                                 (game.screen_width, line2 * tile_size))
+                pygame.draw.line(screen, (255, 255, 255), (0, line2 * tile_size),
+                                 (w, line2 * tile_size))
 
-    def draw_blocks(self, screen):
+    def draw_blocks(self, screen, fb, wg, push):
         World.blocks_displayed.clear()
+        # World.purple_button.clear()
+        # self.check_block_push(fb, wg, Character.dx, screen)
 
         row_count = 0
-
-a        for row in self.world_data:
+        for row in self.world_data:
             col_count = 0
             for tile in row:
+                if tile == 100:
+                    # print(Character.dx)
+                    # img = pygame.transform.scale(self.block, (tile_size, tile_size))
+
+                    # img_rect = self.block.get_rect()
+                    # img_rect.x = 4 * tile_size
+                    #
+                    # img_rect.y = row_count * tile_size
+                    # self.block.get_rect().y = row_count * tile_size
+
+                    # self.check_block_push(fb, wg, Character.dx, screen)
+                    World.p_block.append(self.block)
                 if tile == 1:
                     img = pygame.transform.scale(self.block_middle, (tile_size, tile_size))
                     img_rect = img.get_rect()
@@ -153,8 +175,17 @@ a        for row in self.world_data:
                     img = pygame.transform.scale(self.wall, (tile_size - 12, tile_size * 2))
                     img_rect = img.get_rect()
                     img_rect.x = col_count * tile_size
-                    img_rect.y = row_count * tile_size
-                    screen.blit(img, (img_rect.x, img_rect.y - 34))
+                    img_rect.y = row_count * tile_size - 34
+
+                    self.check_button_press(fb, wg)
+
+                    if self.purple_button_pressed:
+                        img_rect.x = -100
+                        img_rect.y = -100
+
+                    screen.blit(img, (img_rect.x, img_rect.y))
+                    pygame.draw.rect(screen, (255, 255, 255), img_rect, 2)
+                    World.blocks_displayed.append(img_rect)
 
                 if tile == 11:
                     img = pygame.transform.scale(self.buttom, (tile_size + 4, tile_size / 2 - 2))
@@ -162,6 +193,49 @@ a        for row in self.world_data:
                     img_rect.x = col_count * tile_size
                     img_rect.y = row_count * tile_size
                     screen.blit(img, (img_rect.x + 4, img_rect.y + tile_size / 2 + 2))
+                    World.purple_button.append(img_rect)
+                    # print(len(self.purple_button))
+
                     # World.blocks_displayed.append(img_rect)
                 col_count += 1
             row_count += 1
+
+        # draw players
+        fb.move("fb", self.blocks_displayed, push)
+        wg.move("wg", self.blocks_displayed, push)
+
+
+    def check_button_press(self, fb, wg):
+
+        fb_rect = fb.rt_rect()
+        wg_rect = wg.rt_rect()
+
+        for block in World.purple_button:
+            if block.colliderect(fb_rect) or block.colliderect(wg_rect):
+                self.purple_button_pressed = True
+                # print("button pressed")
+            # else:
+            #     self.purple_button_pressed = False
+        World.purple_button.clear()  # must be added here
+
+    # def check_block_push(self, fb, wg, dx, screen):
+    #     block_dx = 0
+    #     self.block.get_rect().x = 4 * 34
+    #
+    #     if self.block.get_rect().colliderect(wg):
+    #         if dx > 0:
+    #             # wg.right = block.left
+    #             block_dx += 8
+    #             print(" left c")
+    #
+    #         if dx < 0:
+    #             # wg.left = block.right
+    #             block_dx -= 8
+    #             print(" right c")
+    #     # self.block_x += block_dx
+    #     self.block.get_rect().x == block_dx
+    #     self.block.get_rect().y = 13 * 34
+    #
+    #     screen.blit(self.block, self.block.get_rect())
+    #
+    #     # print(self.block_x)

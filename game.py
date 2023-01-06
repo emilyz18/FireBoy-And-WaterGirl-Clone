@@ -1,7 +1,11 @@
 import pygame
+
+from push import Push
+# from character import WaterGirl
 from world import *
 from character import *
 from world import World
+from push import *
 
 screen_width = 1020
 screen_height = 680
@@ -29,17 +33,19 @@ class Game:
     def game_loop(self):
         water_girl = WaterGirl(50, screen_height - 140)
         fire_boy = FireBoy(50, screen_height - 140)
+
+        push = Push(4 * 34, 17 * 34, fire_boy, water_girl)
         # world.load_images()
 
         while self.running:
             clock.tick(fps)
             world = World()
             screen.fill((169, 169, 169))
-            world.draw_grid()
-            world.draw_blocks(screen)
+            world.draw_grid(screen, screen_width, screen_height)
+            world.draw_blocks(screen, fire_boy, water_girl, push)
 
-            water_girl.move("wg")
-            fire_boy.move("fb")
+            # water_girl.move("wg")
+            # fire_boy.move("fb")
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
