@@ -201,8 +201,8 @@ class World:
             row_count += 1
 
         # draw players
-        fb.move("fb", self.blocks_displayed, push)
-        wg.move("wg", self.blocks_displayed, push)
+        fb.move(self.blocks_displayed, push)
+        wg.move(self.blocks_displayed, push)
 
 
     def check_button_press(self, fb, wg):
@@ -217,25 +217,3 @@ class World:
             # else:
             #     self.purple_button_pressed = False
         World.purple_button.clear()  # must be added here
-
-    # def check_block_push(self, fb, wg, dx, screen):
-    #     block_dx = 0
-    #     self.block.get_rect().x = 4 * 34
-    #
-    #     if self.block.get_rect().colliderect(wg):
-    #         if dx > 0:
-    #             # wg.right = block.left
-    #             block_dx += 8
-    #             print(" left c")
-    #
-    #         if dx < 0:
-    #             # wg.left = block.right
-    #             block_dx -= 8
-    #             print(" right c")
-    #     # self.block_x += block_dx
-    #     self.block.get_rect().x == block_dx
-    #     self.block.get_rect().y = 13 * 34
-    #
-    #     screen.blit(self.block, self.block.get_rect())
-    #
-    #     # print(self.block_x)
