@@ -56,7 +56,7 @@ class World:
             [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
 
             [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4],
-            [6, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 6, 4],
+            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 6, 4],
             [5, 2, 3, 1, 2, 3, 1, 2, 3, 7, 7, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 5, 6, 4, 5],
             [4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6],  # 15
 
@@ -91,7 +91,7 @@ class World:
                 pygame.draw.line(screen, (255, 255, 255), (0, line2 * tile_size),
                                  (w, line2 * tile_size))
 
-    def draw_blocks(self, screen, fb, wg, push):
+    def draw_blocks(self, screen, fb, wg, push, vent, speeder):
         World.blocks_displayed.clear()
         # World.purple_button.clear()
         # self.check_block_push(fb, wg, Character.dx, screen)
@@ -201,8 +201,8 @@ class World:
             row_count += 1
 
         # draw players
-        fb.move(self.blocks_displayed, push)
-        wg.move(self.blocks_displayed, push)
+        fb.move(self.blocks_displayed, push, vent, speeder)
+        wg.move(self.blocks_displayed, push, vent, speeder)
 
 
     def check_button_press(self, fb, wg):

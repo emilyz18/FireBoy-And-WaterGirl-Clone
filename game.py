@@ -1,6 +1,8 @@
 import pygame
 
 from push import Push
+from speeder import Speeder
+from tramp import Tramp
 # from character import WaterGirl
 from world import *
 from character import *
@@ -35,6 +37,10 @@ class Game:
         fire_boy = FireBoy(50, screen_height - 140)
 
         push = Push(4 * 34, 17 * 34, fire_boy, water_girl)
+        tramp = Tramp(27 * 34, 15 * 34, fire_boy, water_girl)
+        speeder = Speeder(17 * 34, 17 * 34, fire_boy, water_girl)
+        # speeder2 = Speeder(10 * 34, 17 * 34, fire_boy, water_girl)
+
         # world.load_images()
 
         while self.running:
@@ -42,7 +48,11 @@ class Game:
             world = World()
             screen.fill((169, 169, 169))
             world.draw_grid(screen, screen_width, screen_height)
-            world.draw_blocks(screen, fire_boy, water_girl, push)
+            world.draw_blocks(screen, fire_boy, water_girl, push, tramp, speeder)
+
+            tramp.draw()
+            speeder.draw()
+            # speeder2.draw("left")
 
             # water_girl.move("wg")
             # fire_boy.move("fb")

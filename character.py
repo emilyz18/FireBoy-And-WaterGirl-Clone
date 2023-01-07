@@ -1,7 +1,6 @@
 import pygame
 
 import game
-from control import *
 from game import *
 
 
@@ -17,6 +16,11 @@ class Character:
 
     wg_dx = 0
     wg_dy = 0
+
+    fb_air_timer = 0
+    wg_air_timer = 0
+
+    fb_momentum = 0
 
     def __init__(self, x, y):
         # self.block = pygame.image.load("img/block.png")
@@ -40,7 +44,7 @@ class FireBoy(Character):
         self.height = self.fb.get_height()
 
         self.y_momentum = 0
-        self.air_timer = 0
+        # self.air_timer = 0
 
         super().__init__(x, y)
 
@@ -53,7 +57,7 @@ class FireBoy(Character):
     def rt_momentum(self):
         return self.y_momentum
 
-    def move(self, blocks_list, push):
+    def move(self, blocks_list, push, vent, speeder):
         Character.fb_dx = 0
         Character.fb_dy = 0
         key = pygame.key.get_pressed()
@@ -67,7 +71,7 @@ class FireBoy(Character):
         if key[pygame.K_d]:  # right
             Character.fb_dx += 8
         if key[pygame.K_w]:  # jump
-            if self.air_timer < 5:
+            if Character.fb_air_timer < 5:
                 self.y_momentum = -12
 
         # add gravity
@@ -99,13 +103,16 @@ class FireBoy(Character):
                     bottom_collision = True
 
         p_block_collision = push.update(blocks_list, "fb")
+        vent_block_collision = vent.turn_on("fb")
+        speeder_block_collision = speeder.turn_on("fb")
+
         # print(p_block_collision)
 
-        if bottom_collision or p_block_collision:
+        if bottom_collision or p_block_collision or vent_block_collision or speeder_block_collision:
             self.y_momentum = 0
-            self.air_timer = 0
+            Character.fb_air_timer = 0
         else:
-            self.air_timer += 1
+            Character.fb_air_timer += 1
 
         # dy += self.y_momentum
 
@@ -129,7 +136,7 @@ class WaterGirl(Character):
         super().__init__(x, y)
 
         self.y_momentum = 0
-        self.air_timer = 0
+        # self.air_timer = 0
 
     def rt_rect(self):
         return self.rect
@@ -140,21 +147,17 @@ class WaterGirl(Character):
     def rt_momentum(self):
         return self.y_momentum
 
-    def move(self, blocks_list, push):
+    def move(self, blocks_list, push, vent, speeder):
         Character.wg_dx = 0
         Character.wg_dy = 0
         key = pygame.key.get_pressed()
-        # if type == "fb":
-        #     controls = [key[pygame.K_LEFT], key[pygame.K_RIGHT], key[pygame.K_UP]]
-        # if type == "wg":
-        #     controls = [key[pygame.K_a], key[pygame.K_d], key[pygame.K_w]]
 
         if key[pygame.K_LEFT]:  # left
             Character.wg_dx -= 8
         if key[pygame.K_RIGHT]:  # right
             Character.wg_dx += 8
         if key[pygame.K_UP]:  # jump
-            if self.air_timer < 5:
+            if self.wg_air_timer < 5:
                 self.y_momentum = -12
 
         # add gravity
@@ -186,14 +189,17 @@ class WaterGirl(Character):
                     bottom_collision = True
 
         p_block_collision = push.update(blocks_list, "wg")
+        vent_block_collision = vent.turn_on("wg")
+        speeder_block_collision = speeder.turn_on("wg")
+
 
         # print(p_block_collision)
 
-        if bottom_collision or p_block_collision:
+        if bottom_collision or p_block_collision or vent_block_collision or speeder_block_collision:
             self.y_momentum = 0
-            self.air_timer = 0
+            self.wg_air_timer = 0
         else:
-            self.air_timer += 1
+            self.wg_air_timer += 1
 
         # dy += self.y_momentum
 

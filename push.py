@@ -19,9 +19,10 @@ class Push:
         self.fb = fb
         self.wg = wg
         self.top_collision = False
+        self.lock_block = False
 
     def update(self, block_list, c_type):
-        lock_block = False
+        self.lock_block = False
         self.dx = 0
         self.top_collision = False
 
@@ -44,28 +45,44 @@ class Push:
             c_dy = Character.wg_dy
             c_rect_y = c_rect.y
 
+        wgrtx = self.wg.rt_rect().x
+        wgdx = Character.wg_dx
+        wgrty = self.wg.rt_rect().y
+        wgrtimg = self.wg.rt_img()
+
+
+
         # block and character collision
 
         if self.img_rect.colliderect((c_rect_x + c_dx, c_rect_y, c_img.get_width(), c_img.get_height())):
             # Character.dx = 0
-            if not lock_block:
-                if c_dx < 0:
-                    self.dx -= 8
-                if c_dx > 0:
-                    self.dx += 8
-            # if c_type == "fb" and \
-            #         self.img_rect.colliderect((self.wg.rt_rect().x + Character.wg_dx, self.wg.rt_rect().y, self.wg.rt_img().get_width(), self.wg.rt_img().get_height())):
+
+            if c_dx < 0:
+                self.dx -= 8
+            if c_dx > 0:
+                self.dx += 8
+            Character.fb_dx = 0
+            Character.wg_dx = 0
+
+            # if Character.fb_dx == 0 and \
+            # self.img_rect.colliderect((self.fb.rt_rect().x + Character.fb_dx, self.fb.rt_rect().y, self.fb.rt_img().get_width(), self.fb.rt_img().get_height())):
+            #
+            #         # self.img_rect.colliderect((wgrtx + wgdx, wgrty,
+            #         #                            wgrtimg.get_width(), wgrtimg.get_height())):
+            #     Character.fb_dx += -10
+            #     Character.wg_dx = 0
+            #     self.dx = 0
+            #     print(" w")
+            #
+            # if \
+            #                      self.img_rect.colliderect((self.wg.rt_rect().x + Character.wg_dx, self.wg.rt_rect().y, self.wg.rt_img().get_width(), self.wg.rt_img().get_height())):
+            #
+            #     # self.img_rect.colliderect((self.fb.rt_rect().x + Character.fb_dx, self.fb.rt_rect().y,
+            #         #                            self.fb.rt_img().get_width(), self.fb.rt_img().get_height())):
             #     Character.fb_dx = 0
             #     Character.wg_dx = 0
             #     self.dx = 0
-            #     # print(self.dx)
-            # if c_type == "wg" and \
-            #         self.img_rect.colliderect((self.fb.rt_rect().x + Character.fb_dx, self.fb.rt_rect().y,
-            #                                    self.fb.rt_img().get_width(), self.fb.rt_img().get_height())):
-            #     Character.fb_dx = 0
-            #     Character.wg_dx = 0
-            #     self.dx = 0
-            #     # print(self.dx)
+            #     print("g")
 
         if self.img_rect.colliderect(c_rect_x, c_rect_y + c_dy, c_img.get_width(), c_img.get_height()):
             if c_momentum < 0:
@@ -87,21 +104,9 @@ class Push:
                     if c_type == "wg":
                         Character.wg_dx = 0
                         print("wg collided")
-        if self.img_rect.colliderect((c_rect_x + c_dx, c_rect_y, c_img.get_width(), c_img.get_height())):
 
-            if c_type == "fb" and \
-                    self.img_rect.colliderect((self.wg.rt_rect().x + Character.wg_dx, self.wg.rt_rect().y, self.wg.rt_img().get_width(), self.wg.rt_img().get_height())):
-                Character.fb_dx = 0
-                Character.wg_dx = 0
-                self.dx = 0
-                # print(self.dx)
-            if c_type == "wg" and \
-                    self.img_rect.colliderect((self.fb.rt_rect().x + Character.fb_dx, self.fb.rt_rect().y,
-                                               self.fb.rt_img().get_width(), self.fb.rt_img().get_height())):
-                Character.fb_dx = 0
-                Character.wg_dx = 0
-                self.dx -= 100
-                print(self.dx)
+
+
 
         self.img_rect.x += self.dx
         screen.blit(self.block, self.img_rect)
