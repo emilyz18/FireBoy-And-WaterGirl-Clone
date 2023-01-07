@@ -2,6 +2,7 @@ import pygame
 
 from obstacle import *
 from character import *
+
 # from push import *
 
 tile_size = 34
@@ -19,8 +20,8 @@ class World:
         self.water_group = pygame.sprite.Group()
         self.slime_group = pygame.sprite.Group()
         self.wall_group = pygame.sprite.Group()
+        self.speeder_group = pygame.sprite.Group()
         self.purple_button_pressed = False
-
 
         # self.purple_button = []
         # global tile_size
@@ -36,7 +37,7 @@ class World:
             [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],  # 0
             [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
             [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
+            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 6],
             [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
             [4, 0, 0, 0, 0, 0, 0, 11, 0, 0, 10, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
             [6, 0, 0, 0, 0, 0, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 0, 0, 6],
@@ -56,7 +57,7 @@ class World:
             [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
 
             [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4],
-            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 6, 4],
+            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 100, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 6, 4],
             [5, 2, 3, 1, 2, 3, 1, 2, 3, 7, 7, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 5, 6, 4, 5],
             [4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6],  # 15
 
@@ -91,27 +92,17 @@ class World:
                 pygame.draw.line(screen, (255, 255, 255), (0, line2 * tile_size),
                                  (w, line2 * tile_size))
 
-    def draw_blocks(self, screen, fb, wg, push, vent, speeder):
+    def draw_blocks(self, screen, fb, wg, push, vent):
         World.blocks_displayed.clear()
-        # World.purple_button.clear()
-        # self.check_block_push(fb, wg, Character.dx, screen)
 
         row_count = 0
         for row in self.world_data:
             col_count = 0
             for tile in row:
                 if tile == 100:
-                    # print(Character.dx)
-                    # img = pygame.transform.scale(self.block, (tile_size, tile_size))
-
-                    # img_rect = self.block.get_rect()
-                    # img_rect.x = 4 * tile_size
-                    #
-                    # img_rect.y = row_count * tile_size
-                    # self.block.get_rect().y = row_count * tile_size
-
-                    # self.check_block_push(fb, wg, Character.dx, screen)
-                    World.p_block.append(self.block)
+                    speeder = Speeder(col_count * tile_size, row_count * tile_size + 10, fb, wg)
+                    self.speeder_group.add(speeder)
+                    speeder.draw(self.speeder_group, screen)
                 if tile == 1:
                     img = pygame.transform.scale(self.block_middle, (tile_size, tile_size))
                     img_rect = img.get_rect()
@@ -201,9 +192,8 @@ class World:
             row_count += 1
 
         # draw players
-        fb.move(self.blocks_displayed, push, vent, speeder)
-        wg.move(self.blocks_displayed, push, vent, speeder)
-
+        fb.move(self.blocks_displayed, push, vent, self.speeder_group)
+        wg.move(self.blocks_displayed, push, vent, self.speeder_group)
 
     def check_button_press(self, fb, wg):
 

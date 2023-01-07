@@ -1,4 +1,5 @@
 import pygame
+from character import *
 
 tile_size = 34
 
@@ -26,6 +27,7 @@ class Water(Obstacle):
         self.water_image = pygame.image.load("img/water.png")
         self.image = pygame.transform.scale(self.water_image, (tile_size, tile_size - 8))
         super().__init__(x, y)
+        self.top_collision = False
 
 
 class Slime(Obstacle):
@@ -33,6 +35,64 @@ class Slime(Obstacle):
         self.slime_image = pygame.image.load("img/slime.png")
         self.image = pygame.transform.scale(self.slime_image, (tile_size, tile_size - 8))
         super().__init__(x, y)
+
+
+class Speeder(Obstacle):
+    def __init__(self, x, y, fb, wg):
+        self.speeder_image = pygame.image.load("img/speeder.png")
+        self.image = pygame.transform.scale(self.speeder_image, (34, 18))
+        self.top_collision = False
+        self.fb = fb
+        self.wg = wg
+        super().__init__(x, y)
+
+    def turn_on(self, c_type):
+        self.top_collision = False
+
+        if c_type == "fb":
+            c_rect = self.fb.rt_rect()
+            c_img = self.fb.rt_img()
+            c_momentum = self.fb.rt_momentum()
+
+            c_rect_x = c_rect.x
+            c_dx = Character.fb_dx
+            c_dy = Character.fb_dy
+            c_rect_y = c_rect.y
+        if c_type == "wg":
+            c_rect = self.wg.rt_rect()
+            c_img = self.wg.rt_img()
+            c_momentum = self.wg.rt_momentum()
+
+            c_rect_x = c_rect.x
+            c_dx = Character.wg_dx
+            c_dy = Character.wg_dy
+            c_rect_y = c_rect.y
+
+        if self.rect.colliderect((c_rect_x + c_dx, c_rect_y, c_img.get_width(), c_img.get_height())):
+            if c_type == "fb":
+                Character.fb_dx = 0
+            if c_type == "wg":
+                Character.wg_dx = 0
+
+        if self.rect.colliderect(c_rect_x, c_rect_y + c_dy, c_img.get_width(), c_img.get_height()):
+            if c_momentum < 0:
+                if c_type == "fb":
+                    Character.fb_dy = self.rect.bottom - c_rect.top
+                if c_type == "wg":
+                    Character.wg_dy = self.rect.bottom - c_rect.top
+
+
+            elif c_momentum >= 0:  # touch from top
+                self.top_collision = True
+                # print(self.top_collision)
+
+                c_rect.bottom = self.rect.top - c_dy
+                if c_type == "fb":
+                    Character.fb_dx += 2
+                if c_type == "wg":
+                    Character.wg_dx += 2
+
+        return self.top_collision
 
 
 class Wall(Obstacle):

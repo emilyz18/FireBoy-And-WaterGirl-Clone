@@ -57,7 +57,7 @@ class FireBoy(Character):
     def rt_momentum(self):
         return self.y_momentum
 
-    def move(self, blocks_list, push, vent, speeder):
+    def move(self, blocks_list, push, vent, speeder_group):
         Character.fb_dx = 0
         Character.fb_dy = 0
         key = pygame.key.get_pressed()
@@ -104,15 +104,30 @@ class FireBoy(Character):
 
         p_block_collision = push.update(blocks_list, "fb")
         vent_block_collision = vent.turn_on("fb")
-        speeder_block_collision = speeder.turn_on("fb")
 
-        # print(p_block_collision)
+        for speeder in speeder_group:
+            speeder_block_collision = speeder.turn_on("fb")
+            if speeder_block_collision:
+                break
 
         if bottom_collision or p_block_collision or vent_block_collision or speeder_block_collision:
             self.y_momentum = 0
             Character.fb_air_timer = 0
         else:
             Character.fb_air_timer += 1
+
+        # method 2: decrease jump height #################################
+        # for speeder in speeder_group:
+        #     speeder_block_collision = speeder.turn_on("fb")
+        #
+        #
+        #
+        #     if bottom_collision or p_block_collision or vent_block_collision or speeder_block_collision:
+        #         self.y_momentum = 0
+        #         Character.fb_air_timer = 0
+        #     else:
+        #         Character.fb_air_timer += 1
+        #################################################################
 
         # dy += self.y_momentum
 
@@ -147,7 +162,7 @@ class WaterGirl(Character):
     def rt_momentum(self):
         return self.y_momentum
 
-    def move(self, blocks_list, push, vent, speeder):
+    def move(self, blocks_list, push, vent, speeder_group):
         Character.wg_dx = 0
         Character.wg_dy = 0
         key = pygame.key.get_pressed()
@@ -190,10 +205,10 @@ class WaterGirl(Character):
 
         p_block_collision = push.update(blocks_list, "wg")
         vent_block_collision = vent.turn_on("wg")
-        speeder_block_collision = speeder.turn_on("wg")
-
-
-        # print(p_block_collision)
+        for speeder in speeder_group:
+            speeder_block_collision = speeder.turn_on("wg")
+            if speeder_block_collision:
+                break
 
         if bottom_collision or p_block_collision or vent_block_collision or speeder_block_collision:
             self.y_momentum = 0
