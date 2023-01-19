@@ -85,6 +85,7 @@ class FireBoy(Character):
         p_rect = push.rt_rect()
         p_dx = push.rt_dx()
 
+
         # deals collision
         for block in blocks_list:
             if block.colliderect((self.rect.x + Character.fb_dx, self.rect.y, self.width, self.height)):

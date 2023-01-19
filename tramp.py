@@ -1,3 +1,5 @@
+import time
+
 import pygame.image
 from character import *
 
@@ -17,6 +19,7 @@ class Tramp:
         self.fb = fb
         self.wg = wg
         self.top_collision = False
+        self.air_timer = 0
 
     def draw(self):
         screen.blit(self.vent, self.img_rect)
@@ -52,10 +55,9 @@ class Tramp:
 
         if self.img_rect.colliderect(c_rect_x, c_rect_y + c_dy, c_img.get_width(), c_img.get_height()):
             if c_momentum < 0:
-
                 c_rect.top = self.img_rect.bottom
 
-            elif c_momentum >= 0:  # touch from top
+            if c_momentum >= 0:  # touch from top
                 self.top_collision = True
                 c_rect.bottom = self.img_rect.top - c_dy
                 if c_type == "fb":
@@ -65,3 +67,5 @@ class Tramp:
                     Character.wg_dy -= 300
 
         return self.top_collision
+
+

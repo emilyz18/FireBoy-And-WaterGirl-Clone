@@ -33,11 +33,14 @@ class World:
         # 9 slime
         # 10 wall
         # 11 button
+        # 12 right speeders
+        # 13 left speeders
+        # // todo: add spring, left speeder
         self.world_data = [
             [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],  # 0
             [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
             [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 6],
+            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 6],
             [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
             [4, 0, 0, 0, 0, 0, 0, 11, 0, 0, 10, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
             [6, 0, 0, 0, 0, 0, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 0, 0, 6],
@@ -57,7 +60,7 @@ class World:
             [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
 
             [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4],
-            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 100, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 6, 4],
+            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 12, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 6, 4],
             [5, 2, 3, 1, 2, 3, 1, 2, 3, 7, 7, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 5, 6, 4, 5],
             [4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6],  # 15
 
@@ -99,10 +102,6 @@ class World:
         for row in self.world_data:
             col_count = 0
             for tile in row:
-                if tile == 100:
-                    speeder = Speeder(col_count * tile_size, row_count * tile_size + 10, fb, wg)
-                    self.speeder_group.add(speeder)
-                    speeder.draw(self.speeder_group, screen)
                 if tile == 1:
                     img = pygame.transform.scale(self.block_middle, (tile_size, tile_size))
                     img_rect = img.get_rect()
@@ -188,6 +187,14 @@ class World:
                     # print(len(self.purple_button))
 
                     # World.blocks_displayed.append(img_rect)
+                if tile == 12:
+                    speeder = Speeder(col_count * tile_size, row_count * tile_size + 10, fb, wg, "right")
+                    self.speeder_group.add(speeder)
+                    speeder.draw(self.speeder_group, screen)
+                if tile == 13:
+                    speeder = Speeder(col_count * tile_size, row_count * tile_size + 10, fb, wg, "left")
+                    self.speeder_group.add(speeder)
+                    speeder.draw(self.speeder_group, screen)
                 col_count += 1
             row_count += 1
 
