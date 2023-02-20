@@ -57,7 +57,7 @@ class FireBoy(Character):
     def rt_momentum(self):
         return self.y_momentum
 
-    def move(self, blocks_list, push, vent, speeder_group):
+    def move(self, blocks_list, push, speeder_group):
         Character.fb_dx = 0
         Character.fb_dy = 0
         key = pygame.key.get_pressed()
@@ -104,14 +104,16 @@ class FireBoy(Character):
                     bottom_collision = True
 
         p_block_collision = push.update(blocks_list, "fb")
-        vent_block_collision = vent.turn_on("fb")
+        # vent_block_collision = vent.turn_on("fb")
 
         for speeder in speeder_group:
             speeder_block_collision = speeder.turn_on("fb")
             if speeder_block_collision:
                 break
 
-        if bottom_collision or p_block_collision or vent_block_collision or speeder_block_collision:
+        if bottom_collision or p_block_collision or speeder_block_collision:
+        # if bottom_collision or p_block_collision or vent_block_collision or speeder_block_collision:
+
             self.y_momentum = 0
             Character.fb_air_timer = 0
         else:
@@ -163,7 +165,7 @@ class WaterGirl(Character):
     def rt_momentum(self):
         return self.y_momentum
 
-    def move(self, blocks_list, push, vent, speeder_group):
+    def move(self, blocks_list, push, speeder_group):
         Character.wg_dx = 0
         Character.wg_dy = 0
         key = pygame.key.get_pressed()
@@ -205,13 +207,15 @@ class WaterGirl(Character):
                     bottom_collision = True
 
         p_block_collision = push.update(blocks_list, "wg")
-        vent_block_collision = vent.turn_on("wg")
+        # vent_block_collision = vent.turn_on("wg")
         for speeder in speeder_group:
             speeder_block_collision = speeder.turn_on("wg")
             if speeder_block_collision:
                 break
 
-        if bottom_collision or p_block_collision or vent_block_collision or speeder_block_collision:
+        if bottom_collision or p_block_collision or speeder_block_collision:
+        # if bottom_collision or p_block_collision or vent_block_collision or speeder_block_collision:
+
             self.y_momentum = 0
             self.wg_air_timer = 0
         else:

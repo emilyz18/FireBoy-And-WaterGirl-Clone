@@ -107,26 +107,26 @@ class Speeder(Obstacle):
 
         return self.top_collision
 
-
-# class Wall(Obstacle):
-#     def __init__(self, x, y):
-#         self.wall_image = pygame.image.load("img/wall.png")
-#         self.image = pygame.transform.scale(self.wall_image, (tile_size - 12, tile_size * 2))
-#         super().__init__(x, y)
-
-
 # class Tramp(Obstacle):
+#
 #     def __init__(self, x, y, fb, wg):
 #         self.vent = pygame.image.load("img/tramp.png")
-#         self.vent = pygame.transform.scale(self.vent, (68, 24))
-#         self.img_rect = self.vent.get_rect()
+#         self.image = pygame.transform.scale(self.vent, (68, 24))
+#         # self.img_rect = self.vent.get_rect()
 #
-#         self.img_rect.x = x
-#         self.img_rect.y = y + 10
+#         # self.img_rect.x = x
+#         # self.img_rect.y = y + 10
 #         self.fb = fb
 #         self.wg = wg
 #         self.top_collision = False
 #         self.air_timer = 0
+#         super().__init__(x, y)
+#
+#
+#     # def draw(self):
+#     #     screen.blit(self.vent, self.img_rect)
+#     #     pygame.draw.rect(screen, (255, 255, 255), self.img_rect, 2)
+#
 #     def turn_on(self, c_type):
 #         self.top_collision = False
 #
@@ -149,21 +149,28 @@ class Speeder(Obstacle):
 #             c_dy = Character.wg_dy
 #             c_rect_y = c_rect.y
 #
-#         if self.img_rect.colliderect((c_rect_x + c_dx, c_rect_y, c_img.get_width(), c_img.get_height())):
+#         if self.rect.colliderect((c_rect_x + c_dx, c_rect_y, c_img.get_width(), c_img.get_height())):
 #             if c_type == "fb":
 #                 Character.fb_dx = 0
 #             if c_type == "wg":
 #                 Character.wg_dx = 0
 #
-#         if self.img_rect.colliderect(c_rect_x, c_rect_y + c_dy, c_img.get_width(), c_img.get_height()):
+#         if self.rect.colliderect(c_rect_x, c_rect_y + c_dy, c_img.get_width(), c_img.get_height()):
 #             if c_momentum < 0:
+#                 print(c_rect.top)
 #                 c_rect.top = self.img_rect.bottom
 #
 #             if c_momentum >= 0:  # touch from top
+#                 print("touched top")
 #                 self.top_collision = True
-#                 c_rect.bottom = self.img_rect.top - c_dy
+#                 # c_rect.bottom = self.img_rect.top - c_dy
+#
+#                 self.rect.y = 200
+#                 print(self.rect.y)
+#
 #                 if c_type == "fb":
-#                     Character.fb_dy -= 300
+#                     # Character.fb_dy -= 300
+#                     Character.fb_dy -= 12
 #
 #                 if c_type == "wg":
 #                     Character.wg_dy -= 300
