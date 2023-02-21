@@ -107,6 +107,27 @@ class Speeder(Obstacle):
 
         return self.top_collision
 
+
+class Coin(Obstacle):
+    def __init__(self, x, y):
+        image = pygame.image.load("img/coin.png")
+        self.image = pygame.transform.scale(image, (tile_size - 12, tile_size - 12))
+        super().__init__(x, y)
+
+
+class RedGem(Obstacle):
+    def __init__(self, x, y):
+        image = pygame.image.load("img/redGem.png")
+        self.image = pygame.transform.scale(image, (tile_size - 12, tile_size - 16))
+        super().__init__(x, y)
+
+
+class BlueGem(Obstacle):
+    def __init__(self, x, y):
+        image = pygame.image.load("img/blueGem.png")
+        self.image = pygame.transform.scale(image, (tile_size - 12, tile_size - 16))
+        super().__init__(x, y)
+
 # class Tramp(Obstacle):
 #
 #     def __init__(self, x, y, fb, wg):

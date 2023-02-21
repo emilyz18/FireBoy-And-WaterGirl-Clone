@@ -27,6 +27,7 @@ class Character:
         # self.img_rect = self.block.get_rect()
         # self.img_rect.x = x
         # self.img_rect.y = y
+        self.score = 0
         pass
 
     # def draw(self):
@@ -58,6 +59,7 @@ class FireBoy(Character):
         return self.y_momentum
 
     def move(self, blocks_list, push, speeder_group):
+
         Character.fb_dx = 0
         Character.fb_dy = 0
         key = pygame.key.get_pressed()
