@@ -31,49 +31,55 @@ class Game:
 
         self.running = True
 
+        self.world_data = [
+            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],  # 0
+            [6, 0, 20, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
+            [4, 0, 0, 0, 0, 0, 0, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 6],
+            [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+            [4, 0, 0, 0, 0, 0, 0, 11, 0, 0, 10, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+            [6, 0, 0, 0, 0, 0, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 0, 0, 6],
+
+            [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+
+            [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+            [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+
+            [6, 1, 2, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
+            [5, 6, 4, 0, 0, 0, 0, 0, 1, 2, 3, 1, 2, 8, 8, 8, 1, 8, 8, 8, 3, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+            [4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 2, 1, 0, 0, 0, 0, 0, 0, 4],
+
+            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 6],
+
+            [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+            [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+
+            [4, 0, 0, 0, 0, 0, 16, 0, 17, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 4],
+            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 13, 12, 12, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4],
+            [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 5, 6, 4, 5],
+            [4, 3, 1, 2, 3, 1, 7, 7, 7, 2, 3, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1, 2, 3, 6, 4, 6, 5],  # 15
+
+        ]
+
     def game_loop(self):
 
         water_girl = WaterGirl(50, screen_height - 140)
         fire_boy = FireBoy(50, screen_height - 140)
 
         push = Push(4 * 34, 17 * 34, fire_boy, water_girl)
-        # tramp = Tramp(27 * 34, 15 * 34, fire_boy, water_girl)
-        # speeder = Speeder(17 * 34, 17 * 34, fire_boy, water_girl)
-        # speeder2 = Speeder(10 * 34, 17 * 34, fire_boy, water_girl)
 
-        # world.load_images()
-        world = World(screen, fire_boy, water_girl)
+        world = World(screen, fire_boy, water_girl, self.world_data, push)
         # world.draw_blocks(screen, fire_boy, water_girl, push)
-        # img = pygame.image.load("img/blockMiddle.png")
-        # rect = img.get_rect()
-        # screen.blit(img, rect)
 
         # world.draw_grid(screen, screen_width, screen_height)
         # print(world)
 
         while self.running:
             clock.tick(fps)
-            # world = World()
-            # print(world)
             screen.fill((169, 169, 169))
-            # world.draw_grid(screen, screen_width, screen_height)
-            world.draw_blocks(screen, fire_boy, water_girl, push)
+            world.draw_grid(screen, screen_width, screen_height)
+            world.draw_blocks(screen, fire_boy, water_girl)
 
-            # if pygame.sprite.spritecollide(fire_boy, world.coin_group, True):
-            #     self.score += 1
-            # self.draw_text("X " + str(self.score), pygame.font.SysFont("Bauhaus 93", 30), (255, 255, 255),
-            #                tile_size - 10, 10)
-            #
-            # world.coin_group.draw(screen)
-
-
-
-            # tramp.draw()
-            # speeder.draw(screen)
-            # speeder2.draw("left")
-
-            # water_girl.move("wg")
-            # fire_boy.move("fb")
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -81,8 +87,4 @@ class Game:
             pygame.display.update()
 
         pygame.quit()
-
-    def draw_text(self, text, font, text_col, x, y):
-        img = font.render(text, True, text_col)
-        game.screen.blit(img, (x, y))
 

@@ -69,12 +69,12 @@ class FireBoy(Character):
         #     controls = [key[pygame.K_a], key[pygame.K_d], key[pygame.K_w]]
 
         if key[pygame.K_a]:  # left
-            Character.fb_dx -= 8
+            Character.fb_dx -= 7
         if key[pygame.K_d]:  # right
-            Character.fb_dx += 8
+            Character.fb_dx += 7
         if key[pygame.K_w]:  # jump
             if Character.fb_air_timer < 5:
-                self.y_momentum = -12
+                self.y_momentum = -10
 
         # add gravity
         self.y_momentum += 1
@@ -173,12 +173,12 @@ class WaterGirl(Character):
         key = pygame.key.get_pressed()
 
         if key[pygame.K_LEFT]:  # left
-            Character.wg_dx -= 8
+            Character.wg_dx -= 7
         if key[pygame.K_RIGHT]:  # right
-            Character.wg_dx += 8
+            Character.wg_dx += 7
         if key[pygame.K_UP]:  # jump
             if self.wg_air_timer < 5:
-                self.y_momentum = -12
+                self.y_momentum = -10
 
         # add gravity
         self.y_momentum += 1

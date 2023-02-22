@@ -17,7 +17,7 @@ class World:
 
     # p_block = []
 
-    def __init__(self, screen, fb, wg):
+    def __init__(self, screen, fb, wg, data, push):
         self.block_x = 34 * 4
         self.lava_group = pygame.sprite.Group()
         self.water_group = pygame.sprite.Group()
@@ -26,6 +26,8 @@ class World:
         self.coin_group = pygame.sprite.Group()
         self.redGem_group = pygame.sprite.Group()
         self.blueGem_group = pygame.sprite.Group()
+        self.fbDoor_group = pygame.sprite.Group()
+        self.wgDoor_group = pygame.sprite.Group()
 
 
         self.vertical_button_pressed = False
@@ -34,6 +36,8 @@ class World:
         self.vertical_buttons = []
 
         self.coin_score = 0
+        self.red_gem_score = 0
+        self.blue_gem_score = 0
 
         # self.purple_button = []
         # global tile_size
@@ -52,35 +56,11 @@ class World:
         # 16 coin
         # 17 red gem
         # 18 blue gem
-        self.world_data = [
-            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],  # 0
-            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-            [4, 0, 0, 0, 0, 0, 0, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 6],
-            [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
-            [4, 0, 0, 0, 0, 0, 0, 11, 0, 0, 10, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-            [6, 0, 0, 0, 0, 0, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 0, 0, 6],
-
-            [5, 0, 0, 0, 0, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 0, 0, 5],
-
-            [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-            [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-
-            [6, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-            [5, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 5],
-            [4, 5, 6, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 7, 7, 3, 1, 8, 8, 1, 9, 9, 1, 0, 0, 0, 0, 0, 0, 4],
-
-            [6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 1, 1, 0, 14, 0, 6],
-
-            [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
-            [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
-
-            [4, 0, 0, 0, 0, 0, 16, 0, 17, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 12, 0, 0, 0, 15, 0, 0, 0, 0, 4, 5, 6, 4],
-            [5, 2, 3, 1, 2, 3, 1, 2, 3, 7, 7, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 5, 6, 4, 5],
-            [4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6],  # 15
-
-        ]
+        # 19 stairs
+        # 20 fb door
+        # 21 wg door
+        self.world_data = data
+        self.push = push
 
         self.load_images()
         row_count = 0
@@ -152,10 +132,10 @@ class World:
                     slime = Slime(col_count * tile_size, row_count * tile_size + 8)
                     self.slime_group.add(slime)
                 if tile == 12:
-                    speeder = Speeder(col_count * tile_size, row_count * tile_size + 10, fb, wg, "right")
+                    speeder = Speeder(col_count * tile_size, row_count * tile_size, fb, wg, "right")
                     self.speeder_group.add(speeder)
                 if tile == 13:
-                    speeder = Speeder(col_count * tile_size, row_count * tile_size + 10, fb, wg, "left")
+                    speeder = Speeder(col_count * tile_size, row_count * tile_size, fb, wg, "left")
                     self.speeder_group.add(speeder)
                     # speeder.draw(self.speeder_group, screen)
                 if tile == 16:
@@ -170,6 +150,23 @@ class World:
                 if tile == 18:
                     bg = BlueGem(col_count * tile_size, row_count * tile_size)
                     self.blueGem_group.add(bg)
+
+                if tile == 19:
+                    img = pygame.transform.scale(self.stair, (tile_size, tile_size - 10))
+                    img_rect = img.get_rect()
+                    img_rect.x = col_count * tile_size
+                    img_rect.y = row_count * tile_size
+                    tile = (img, img_rect)
+                    World.render_blocks.append(tile)
+                    World.collision_blocks.append(img_rect)
+
+                if tile == 20:
+                    rg = FbDoor(col_count * tile_size, row_count * tile_size)
+                    self.fbDoor_group.add(rg)
+
+                if tile == 21:
+                    rg = WgDoor(col_count * tile_size, row_count * tile_size)
+                    self.wgDoor_group.add(rg)
 
                 col_count += 1
             row_count += 1
@@ -188,6 +185,8 @@ class World:
         self.horizontal_wall = pygame.image.load("img/hwall.png")
         self.horizontal_button = pygame.image.load("img/hbutton.png")
 
+        self.stair = pygame.image.load("img/stair.png")
+
     def draw_grid(self, screen, w, h):
         for line in range(0, 30):
             pygame.draw.line(screen, (255, 255, 255), (line * tile_size, 0),
@@ -197,7 +196,7 @@ class World:
                 pygame.draw.line(screen, (255, 255, 255), (0, line2 * tile_size),
                                  (w, line2 * tile_size))
 
-    def draw_blocks(self, screen, fb, wg, push):
+    def draw_blocks(self, screen, fb, wg):
         # World.blocks_displayed.clear()
         # self.horizontal_buttons.clear()
         # World.vertical_buttons.clear()
@@ -281,10 +280,18 @@ class World:
 
         if pygame.sprite.spritecollide(fb, self.coin_group, True) or pygame.sprite.spritecollide(wg, self.coin_group, True):
             self.coin_score += 1
+        if pygame.sprite.spritecollide(fb, self.redGem_group, True):
+            self.red_gem_score += 1
+        if pygame.sprite.spritecollide(wg, self.blueGem_group, True):
+            self.blue_gem_score += 1
 
-
-        self.draw_text("X " + str(self.coin_score), pygame.font.SysFont("Bauhaus 93", 30), (255, 255, 255),
+        self.draw_text("Coin: " + str(self.coin_score), pygame.font.SysFont("Bauhaus 93", 25), (255, 255, 255),
                        tile_size - 10, 10)
+
+        self.draw_text("Red: " + str(self.red_gem_score), pygame.font.SysFont("Bauhaus 93", 25), (255, 255, 255),
+                       tile_size - 10, 50)
+        self.draw_text("Blue: " + str(self.blue_gem_score), pygame.font.SysFont("Bauhaus 93", 25), (255, 255, 255),
+                       tile_size - 10, 90)
 
 
         self.lava_group.draw(screen)
@@ -295,11 +302,13 @@ class World:
         self.coin_group.draw(screen)
         self.redGem_group.draw(screen)
         self.blueGem_group.draw(screen)
+        self.fbDoor_group.draw(screen)
+        self.wgDoor_group.draw(screen)
 
         # draw players
         combined = self.collision_blocks + vertical_list + horizontal_list
-        fb.move(combined, push, self.speeder_group)
-        wg.move(combined, push, self.speeder_group)
+        fb.move(combined, self.push, self.speeder_group)
+        wg.move(combined, self.push, self.speeder_group)
 
     def check_button_v_press(self, fb, wg, type):
 
