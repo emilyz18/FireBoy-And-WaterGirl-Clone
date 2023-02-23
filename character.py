@@ -122,7 +122,7 @@ class FireBoy(Character):
 
         game.screen.blit(self.fb, self.rect)
 
-        pygame.draw.rect(game.screen, (255, 255, 255), self.rect, 2)
+        # pygame.draw.rect(game.screen, (255, 255, 255), self.rect, 2)
 
 
 class WaterGirl(Character):
@@ -207,4 +207,4 @@ class WaterGirl(Character):
 
         game.screen.blit(self.wg, self.rect)
 
-        pygame.draw.rect(game.screen, (255, 255, 255), self.rect, 2)
+        # pygame.draw.rect(game.screen, (255, 255, 255), self.rect, 2)
