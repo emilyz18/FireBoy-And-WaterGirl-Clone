@@ -8,8 +8,6 @@ from game import *
 
 
 class Character:
-    # dx = 0
-    # dy = 0
 
     fb_dx = 0
     fb_dy = 0
@@ -20,19 +18,11 @@ class Character:
     fb_air_timer = 0
     wg_air_timer = 0
 
-    fb_momentum = 0
 
-    def __init__(self, x, y):
-        # self.block = pygame.image.load("img/block.png")
-        # self.img_rect = self.block.get_rect()
-        # self.img_rect.x = x
-        # self.img_rect.y = y
-        self.score = 0
+    def __init__(self):
         pass
 
-    # def draw(self):
-    # game.screen.blit(self.fb, self.rect)
-    # game.screen.blit(self.wg, self.rect)
+
 
 
 class FireBoy(Character):
@@ -45,9 +35,8 @@ class FireBoy(Character):
         self.height = self.fb.get_height()
 
         self.y_momentum = 0
-        # self.air_timer = 0
 
-        super().__init__(x, y)
+        super().__init__()
 
     def rt_rect(self):
         return self.rect
@@ -63,10 +52,6 @@ class FireBoy(Character):
         Character.fb_dx = 0
         Character.fb_dy = 0
         key = pygame.key.get_pressed()
-        # if type == "fb":
-        #     controls = [key[pygame.K_LEFT], key[pygame.K_RIGHT], key[pygame.K_UP]]
-        # if type == "wg":
-        #     controls = [key[pygame.K_a], key[pygame.K_d], key[pygame.K_w]]
 
         if key[pygame.K_a]:  # left
             Character.fb_dx -= 7
@@ -83,9 +68,6 @@ class FireBoy(Character):
         Character.fb_dy += self.y_momentum
 
         bottom_collision = False
-
-        p_rect = push.rt_rect()
-        p_dx = push.rt_dx()
 
 
         # deals collision
@@ -114,7 +96,6 @@ class FireBoy(Character):
                 break
 
         if bottom_collision or p_block_collision or speeder_block_collision:
-        # if bottom_collision or p_block_collision or vent_block_collision or speeder_block_collision:
 
             self.y_momentum = 0
             Character.fb_air_timer = 0
@@ -153,10 +134,9 @@ class WaterGirl(Character):
         self.rect.y = y
         self.width = self.wg.get_width()
         self.height = self.wg.get_height()
-        super().__init__(x, y)
+        super().__init__()
 
         self.y_momentum = 0
-        # self.air_timer = 0
 
     def rt_rect(self):
         return self.rect
@@ -188,8 +168,6 @@ class WaterGirl(Character):
 
         bottom_collision = False
 
-        p_rect = push.rt_rect()
-        p_dx = push.rt_dx()
 
         # deals collision
         for block in blocks_list:
@@ -216,7 +194,6 @@ class WaterGirl(Character):
                 break
 
         if bottom_collision or p_block_collision or speeder_block_collision:
-        # if bottom_collision or p_block_collision or vent_block_collision or speeder_block_collision:
 
             self.y_momentum = 0
             self.wg_air_timer = 0

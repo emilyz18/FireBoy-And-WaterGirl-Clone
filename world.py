@@ -12,12 +12,9 @@ tile_size = 34
 
 class World:
     collision_blocks = []
-    # horizontal_buttons = []
     render_blocks = [] # collision blocks in tuple format
 
-    # p_block = []
-
-    def __init__(self, screen, fb, wg, data, push):
+    def __init__(self, fb, wg, data, push):
         self.block_x = 34 * 4
         self.lava_group = pygame.sprite.Group()
         self.water_group = pygame.sprite.Group()
@@ -88,7 +85,6 @@ class World:
                     img_rect = img.get_rect()
                     img_rect.x = col_count * tile_size
                     img_rect.y = row_count * tile_size
-                    # screen.blit(img, img_rect)
                     tile = (img, img_rect)
                     World.render_blocks.append(tile)
                     World.collision_blocks.append(img_rect)
@@ -97,8 +93,6 @@ class World:
                     img_rect = img.get_rect()
                     img_rect.x = col_count * tile_size
                     img_rect.y = row_count * tile_size
-                    # screen.blit(img, img_rect)
-                    # World.blocks_displayed.append(img_rect)
                     tile = (img, img_rect)
                     World.render_blocks.append(tile)
                     World.collision_blocks.append(img_rect)
@@ -107,8 +101,6 @@ class World:
                     img_rect = img.get_rect()
                     img_rect.x = col_count * tile_size
                     img_rect.y = row_count * tile_size
-                    # screen.blit(img, img_rect)
-                    # World.blocks_displayed.append(img_rect)
                     tile = (img, img_rect)
                     World.render_blocks.append(tile)
                     World.collision_blocks.append(img_rect)
@@ -117,8 +109,6 @@ class World:
                     img_rect = img.get_rect()
                     img_rect.x = col_count * tile_size
                     img_rect.y = row_count * tile_size
-                    # screen.blit(img, img_rect)
-                    # World.blocks_displayed.append(img_rect)
                     tile = (img, img_rect)
                     World.render_blocks.append(tile)
                     World.collision_blocks.append(img_rect)
@@ -137,11 +127,9 @@ class World:
                 if tile == 13:
                     speeder = Speeder(col_count * tile_size, row_count * tile_size, fb, wg, "left")
                     self.speeder_group.add(speeder)
-                    # speeder.draw(self.speeder_group, screen)
                 if tile == 16:
                     coin = Coin(col_count * tile_size, row_count * tile_size)
                     self.coin_group.add(coin)
-                    # coin.draw(self.coin_group, screen)
 
                 if tile == 17:
                     rg = RedGem(col_count * tile_size, row_count * tile_size)
@@ -196,10 +184,7 @@ class World:
                 pygame.draw.line(screen, (255, 255, 255), (0, line2 * tile_size),
                                  (w, line2 * tile_size))
 
-    def draw_blocks(self, screen, fb, wg):
-        # World.blocks_displayed.clear()
-        # self.horizontal_buttons.clear()
-        # World.vertical_buttons.clear()
+    def draw_blocks(self, screen, fb, wg, game_over):
 
         # World.render_blocks.clear()
 
@@ -213,10 +198,6 @@ class World:
             col_count = 0
             for tile in row:
                 if tile == 10:
-                    # wall = Wall(col_count * tile_size, row_count * tile_size - 34)
-                    # self.wall_group.add(wall)
-                    # wall.draw(self.wall_group, screen)
-                    # # World.blocks_displayed.append(wall.get_rect())
 
                     img = pygame.transform.scale(self.wall, (tile_size - 12, tile_size * 2))
                     img_rect = img.get_rect()
@@ -231,9 +212,6 @@ class World:
 
                     screen.blit(img, (img_rect.x, img_rect.y))
                     pygame.draw.rect(screen, (255, 255, 255), img_rect, 2)
-                    # World.blocks_displayed.append(img_rect)
-                    # tile = (img, img_rect)
-                    # World.render_blocks.append(tile)
                     vertical_list.append(img_rect)
                 if tile == 11:
                     img = pygame.transform.scale(self.vertical_button, (tile_size + 4, tile_size / 2 - 2))
@@ -243,11 +221,6 @@ class World:
                     screen.blit(img, (img_rect.x, img_rect.y))
 
                     self.vertical_buttons.append(img_rect)
-
-                    # World.blocks_displayed.append(img_rect)
-                    # tile = (img, img_rect)
-                    # World.render_blocks.append(tile)
-
                 if tile == 14:
                     img = pygame.transform.scale(self.horizontal_wall, (tile_size * 2, tile_size - 12))
                     img_rect = img.get_rect()
@@ -285,6 +258,24 @@ class World:
         if pygame.sprite.spritecollide(wg, self.blueGem_group, True):
             self.blue_gem_score += 1
 
+        if pygame.sprite.spritecollide(fb, self.slime_group, False) or pygame.sprite.spritecollide(wg, self.slime_group, False):
+            game_over = True
+
+        if pygame.sprite.spritecollide(fb, self.water_group, False):
+            game_over = True
+
+        # check for collitsion with lava
+        if pygame.sprite.spritecollide(wg, self.lava_group, False):
+            game_over = True
+
+
+
+        # check for collision with exit
+        if pygame.sprite.spritecollide(fb, self.fbDoor_group, False) and pygame.sprite.spritecollide(wg, self.wgDoor_group,False):
+            game_over = True
+
+
+
         self.draw_text("Coin: " + str(self.coin_score), pygame.font.SysFont("Bauhaus 93", 25), (255, 255, 255),
                        tile_size - 10, 10)
 
@@ -309,6 +300,8 @@ class World:
         combined = self.collision_blocks + vertical_list + horizontal_list
         fb.move(combined, self.push, self.speeder_group)
         wg.move(combined, self.push, self.speeder_group)
+
+        return game_over
 
     def check_button_v_press(self, fb, wg, type):
 

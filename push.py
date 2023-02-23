@@ -45,11 +45,6 @@ class Push:
             c_dy = Character.wg_dy
             c_rect_y = c_rect.y
 
-        wgrtx = self.wg.rt_rect().x
-        wgdx = Character.wg_dx
-        wgrty = self.wg.rt_rect().y
-        wgrtimg = self.wg.rt_img()
-
 
 
         # block and character collision

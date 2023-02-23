@@ -1,5 +1,9 @@
+import sys
+
 import pygame
 
+import data
+from Button import Button
 from push import Push
 # from character import WaterGirl
 from world import *
@@ -13,10 +17,12 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
 fps = 60
 
+BG = pygame.image.load("img/Background.png")
+
+test = []
 
 
 class Game:
-
 
     def __init__(self):
         self.score = 0
@@ -31,110 +37,18 @@ class Game:
 
         self.running = True
 
-        # self.world_data2 = [
-        #     [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-        #     [4, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 0, 21, 0, 4],
-        #     [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-        #     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 12, 12, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 1, 2, 3, 1, 2, 5],
-        #     [4, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 0, 0, 0, 0, 1, 4, 5, 6, 4, 5, 4, 5, 4],
-        #     [6, 0,  0, 0, 0, 0, 0, 3, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 6, 4, 5, 6, 4, 5, 6, 6],
-        #
-        #     [5, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
-        #
-        #     [4, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-        #     [4, 1, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 0, 4],
-        #     [6, 5, 0, 0, 0, 0, 0, 0, 1,  0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-        #     [5, 6, 0, 0, 0, 0, 0, 0, 4,  2, 1,  3, 1, 8, 8, 8, 1, 8, 8, 8, 3, 11, 0, 0, 0, 0, 0, 0, 0, 5],
-        #     [4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 2, 1, 0, 0, 0, 0, 0, 0, 4],
-        #
-        #     [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 6],
-        #
-        #     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
-        #     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
-        #
-        #     [4, 0, 0, 0, 0, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 4],
-        #     [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 13, 13, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4],
-        #     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 5, 6, 4, 5],
-        #     [4, 3, 1, 2, 3, 1, 7, 7, 7, 2, 3, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1, 2, 3, 6, 4, 6, 5],
-        #     [6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 6],  # 0
-        #
-        # ]
+        self.world_data1 = data.data1
 
-        # self.world_data1 = [
-        #     [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-        #     [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-        #     [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-        #     [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-        #     [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-        #     [6, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 6],
-        #
-        #     [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-        #
-        #     [6, 0, 0, 0, 0, 1, 2, 8, 8, 8, 1, 2, 9, 9, 9, 9, 9, 9, 1, 3, 7, 7, 7, 2, 1, 0, 0, 0, 0, 6],
-        #     [6, 0, 0, 0, 0, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 0, 0, 0, 0, 6],
-        #     [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-        #     [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-        #     [6, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 4, 6, 0, 0, 15, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 6],
-        #
-        #     [6, 0, 0, 0, 0, 0, 1, 2, 3, 1, 2, 0, 14, 0, 6, 4, 0, 0, 2, 3, 1, 2, 3, 1, 3, 2, 0, 0, 0, 6],
-        #     [4, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 5, 6, 0, 0, 0, 0, 0, 0, 0, 4, 5, 6, 3, 2, 1, 4],
-        #     [6, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-        #     [6, 1, 2, 3, 1, 2, 4, 0, 0, 0, 16, 0, 0, 0, 5, 6, 0, 0, 0, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-        #     [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-        #     [4, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 0, 4],
-        #     [6, 0, 0, 0, 0, 0, 3, 2, 1, 9, 9, 9, 9, 1, 6, 6, 1, 9, 9, 9, 9, 1, 2, 3, 0, 0, 0, 0, 0, 6],
-        #     [6, 1, 3, 2, 1, 3, 5, 4, 5, 6, 4, 5, 6, 4, 4, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 6]
-        #
-        # ]
+        self.world_data2 = data.data2
 
-        self.world_data2 = [
-            [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-            [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
-            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-            [4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-            [5, 16, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 1, 15, 0, 0, 0, 0, 0, 0, 0, 0, 16, 5],
-            [6, 0, 0, 0, 0, 19, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 2, 1, 0, 0, 0, 0, 0, 0, 0, 19, 6],
-            [4, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-            [5, 19, 0, 0, 0, 0, 6, 5, 3, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 13, 13, 0, 0, 0, 0, 6],
-            [6, 0, 0, 0, 0, 0, 5, 6, 5, 2, 1, 7, 7, 7, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 5],
-            [4, 0, 0, 0, 0, 19, 4, 4, 6, 4, 5, 6, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-            [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-            [6, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 3, 2, 1, 0, 0, 5],
-            [4, 0, 0, 15, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-            [5, 3, 2, 1, 3, 2, 1, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 5],
-            [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6],
-            [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 19, 0, 0, 0, 0, 12, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 4],
-            [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 5],
-            [5, 1, 2, 8, 8, 8, 1, 2, 3, 1, 2, 3, 5, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1, 2, 3, 6],
-            [6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 4],
-
-        ]
+        self.world_data3 = data.data3
 
     def game_loop(self):
 
-        # water_girl2 = WaterGirl(50, screen_height - 140)
-        # fire_boy2 = FireBoy(50, screen_height - 140)
-
-        # water_girl1 = WaterGirl(screen_width - 3 * 34 + 17, 34)
-        # fire_boy1 = FireBoy(2 * 34 - 17, 34)
-
-        water_girl2 = WaterGirl(screen_width - 3 * 34 + 17, screen_height - 3 * 34)
-        fire_boy2 = FireBoy(2 * 34 - 17, screen_height - 3 * 34)
-
-        push = Push(7 * 34, 17 * 34, fire_boy2, water_girl2)
-
-        world = World(screen, fire_boy2, water_girl2, self.world_data2, push)
-        # world.draw_blocks(screen, fire_boy, water_girl, push)
-
-        # world.draw_grid(screen, screen_width, screen_height)
-        # print(world)
-
         while self.running:
+            self.main_menu()
             clock.tick(fps)
             screen.fill((169, 169, 169))
-            # world.draw_grid(screen, screen_width, screen_height)
-            world.draw_blocks(screen, fire_boy2, water_girl2)
 
 
             for event in pygame.event.get():
@@ -144,3 +58,130 @@ class Game:
 
         pygame.quit()
 
+    def get_font(self, size):
+        return pygame.font.Font("img/font.ttf", size)
+
+    def main_menu(self):
+        while True:
+            screen.blit(BG, (0, 0))
+
+            MENU_MOUSE_POS = pygame.mouse.get_pos()
+
+
+            lv1_button = Button(image=pygame.image.load("img/buttonLabel.png"), pos=(540, 165),
+                                text_input="Level 1", font=self.get_font(70), base_color="#d7fcd4",
+                                hovering_color="White")
+
+            lv2_button = Button(image=pygame.image.load("img/buttonLabel.png"), pos=(540, 315),
+                                text_input="Level 2", font=self.get_font(70), base_color="#d7fcd4",
+                                hovering_color="White")
+
+            lv3_button = Button(image=pygame.image.load("img/buttonLabel.png"), pos=(540, 465),
+                                text_input="Level 3", font=self.get_font(70), base_color="#d7fcd4",
+                                hovering_color="Grey")
+
+            # screen.blit(MENU_TEXT, MENU_RECT)
+
+            for button in [lv1_button, lv2_button, lv3_button]:
+                button.changeColor(MENU_MOUSE_POS)
+                button.update(screen)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if lv1_button.checkForInput(MENU_MOUSE_POS):
+                        self.play1()
+                    if lv2_button.checkForInput(MENU_MOUSE_POS):
+                        self.play2()
+                    if lv3_button.checkForInput(MENU_MOUSE_POS):
+                        self.play3()
+
+            pygame.display.update()
+
+    def play1(self):
+        water_girl1 = WaterGirl(screen_width - 3 * 34 + 17, 34)
+        fire_boy1 = FireBoy(2 * 34 - 17, 34)
+
+        push = Push(3 * 34, 14 * 34, fire_boy1, water_girl1)
+
+        world = World(fire_boy1, water_girl1, self.world_data1, push)
+
+        while self.running:
+            clock.tick(fps)
+            screen.fill((169, 169, 169))
+
+            # world.draw_grid(screen, screen_width, screen_height)
+            game_over = world.draw_blocks(screen, fire_boy1, water_girl1, False)
+            if game_over:
+                del water_girl1
+                del fire_boy1
+                del push
+                del world
+                self.play1()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+            pygame.display.update()
+
+        pygame.quit()
+
+    def play2(self):
+        water_girl2 = WaterGirl(50, screen_height - 140)
+        fire_boy2 = FireBoy(50, screen_height - 140)
+
+        push = Push(4 * 34, 10 * 34, fire_boy2, water_girl2)
+
+        world = World(fire_boy2, water_girl2, self.world_data2, push)
+        # print(test)
+
+        while self.running:
+            clock.tick(fps)
+            screen.fill((169, 169, 169))
+
+            # world.draw_grid(screen, screen_width, screen_height)
+            game_over = world.draw_blocks(screen, fire_boy2, water_girl2, False)
+            if game_over:
+                del water_girl2
+                del fire_boy2
+                del push
+                del world
+                self.play2()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+            pygame.display.update()
+
+        pygame.quit()
+
+    def play3(self):
+        water_girl3 = WaterGirl(screen_width - 3 * 34 + 17, screen_height - 3 * 34)
+        fire_boy3 = FireBoy(2 * 34 - 17, screen_height - 3 * 34)
+
+        push = Push(7 * 34, 17 * 34, fire_boy3, water_girl3)
+
+        world = World(fire_boy3, water_girl3, self.world_data3, push)
+        # print(test)
+
+        while self.running:
+            clock.tick(fps)
+            screen.fill((169, 169, 169))
+
+            # world.draw_grid(screen, screen_width, screen_height)
+            game_over = world.draw_blocks(screen, fire_boy3, water_girl3, False)
+            if game_over:
+                del water_girl3
+                del fire_boy3
+                del push
+                del world
+                self.play3()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+            pygame.display.update()
+
+        pygame.quit()
