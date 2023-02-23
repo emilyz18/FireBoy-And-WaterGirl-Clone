@@ -1,5 +1,6 @@
 import pygame
 
+import game
 from obstacle import *
 from character import *
 from push import Push
@@ -186,9 +187,6 @@ class World:
 
     def draw_blocks(self, screen, fb, wg, game_over):
 
-        # World.render_blocks.clear()
-
-        # World.collision_blocks.clear()
         vertical_list = []
         horizontal_list = []
 
@@ -243,7 +241,6 @@ class World:
                     img_rect.y = row_count * tile_size + tile_size / 2 + 2
                     screen.blit(img, (img_rect.x, img_rect.y))
                     self.horizontal_buttons.append(img_rect)
-
                 col_count += 1
             row_count += 1
 
@@ -268,33 +265,13 @@ class World:
         if pygame.sprite.spritecollide(wg, self.lava_group, False):
             game_over = True
 
-
-
         # check for collision with exit
         if pygame.sprite.spritecollide(fb, self.fbDoor_group, False) and pygame.sprite.spritecollide(wg, self.wgDoor_group,False):
             game_over = True
 
+        self.display_score()
 
-
-        self.draw_text("Coin: " + str(self.coin_score), pygame.font.SysFont("Bauhaus 93", 25), (255, 255, 255),
-                       tile_size - 10, 10)
-
-        self.draw_text("Red: " + str(self.red_gem_score), pygame.font.SysFont("Bauhaus 93", 25), (255, 255, 255),
-                       tile_size - 10, 50)
-        self.draw_text("Blue: " + str(self.blue_gem_score), pygame.font.SysFont("Bauhaus 93", 25), (255, 255, 255),
-                       tile_size - 10, 90)
-
-
-        self.lava_group.draw(screen)
-        self.water_group.draw(screen)
-        self.slime_group.draw(screen)
-        self.speeder_group.draw(screen)
-
-        self.coin_group.draw(screen)
-        self.redGem_group.draw(screen)
-        self.blueGem_group.draw(screen)
-        self.fbDoor_group.draw(screen)
-        self.wgDoor_group.draw(screen)
+        self.draw_sprites(screen)
 
         # draw players
         combined = self.collision_blocks + vertical_list + horizontal_list
@@ -325,5 +302,26 @@ class World:
     def draw_text(self, text, font, text_col, x, y):
         img = font.render(text, True, text_col)
         game.screen.blit(img, (x, y))
+
+    def draw_sprites(self, screen):
+        self.lava_group.draw(screen)
+        self.water_group.draw(screen)
+        self.slime_group.draw(screen)
+        self.speeder_group.draw(screen)
+
+        self.coin_group.draw(screen)
+        self.redGem_group.draw(screen)
+        self.blueGem_group.draw(screen)
+        self.fbDoor_group.draw(screen)
+        self.wgDoor_group.draw(screen)
+
+    def display_score(self):
+        self.draw_text("Coin: " + str(self.coin_score), pygame.font.SysFont("Bauhaus 93", 25), (255, 255, 255),
+                       tile_size - 10, 10)
+
+        self.draw_text("Red: " + str(self.red_gem_score), pygame.font.SysFont("Bauhaus 93", 25), (255, 255, 255),
+                       tile_size - 10, 50)
+        self.draw_text("Blue: " + str(self.blue_gem_score), pygame.font.SysFont("Bauhaus 93", 25), (255, 255, 255),
+                       tile_size - 10, 90)
 
 
