@@ -113,6 +113,8 @@ class Coin(Obstacle):
         image = pygame.image.load("img/coin.png")
         self.image = pygame.transform.scale(image, (tile_size - 12, tile_size - 12))
         super().__init__(x, y)
+        self.rect.center = (x + 17,y + 17)
+
 
 
 class RedGem(Obstacle):

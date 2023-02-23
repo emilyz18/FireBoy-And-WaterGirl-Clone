@@ -276,7 +276,7 @@ class World:
 
         for tile in World.render_blocks:
             screen.blit(tile[0], tile[1])
-            pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
+            # pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
 
         if pygame.sprite.spritecollide(fb, self.coin_group, True) or pygame.sprite.spritecollide(wg, self.coin_group, True):
             self.coin_score += 1
