@@ -2,13 +2,10 @@ import pygame
 
 import game
 from obstacle import *
-from character import *
-from push import Push
-# from tramp import Tramp
 
-# from push import *
 
-tile_size = 34
+
+# tile_size = 34
 
 
 class World:

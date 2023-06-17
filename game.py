@@ -1,13 +1,9 @@
 import sys
 
-import pygame
-
 import data
 from Button import Button
 from push import Push
-# from character import WaterGirl
 from world import *
-from character import *
 from world import World
 from push import *
 
@@ -19,11 +15,7 @@ fps = 60
 
 BG = pygame.image.load("img/Background.png")
 
-test = []
-
-
 class Game:
-
     def __init__(self):
         self.score = 0
 

@@ -6,7 +6,6 @@ screen_width = 1020
 screen_height = 680
 screen = pygame.display.set_mode((screen_width, screen_height))
 
-
 class Push:
     dx = 0
 
@@ -45,39 +44,26 @@ class Push:
             c_dy = Character.wg_dy
             c_rect_y = c_rect.y
 
-
-
         # block and character collision
+        self.block_character_collision(c_rect_x, c_dx, c_rect_y, c_img, c_rect, c_momentum, c_dy)
 
+        # pushable with block collision
+        self.pushable_block_collision(block_list, c_type, c_rect_x, c_dx, c_rect_y, c_img)
+
+
+        self.rect.x += self.dx
+        screen.blit(self.block, self.rect)
+
+        return self.top_collision
+
+    def block_character_collision(self, c_rect_x, c_dx, c_rect_y, c_img, c_rect, c_momentum, c_dy):
         if self.rect.colliderect((c_rect_x + c_dx, c_rect_y, c_img.get_width(), c_img.get_height())):
-            # Character.dx = 0
-
             if c_dx < 0:
                 self.dx -= 8
             if c_dx > 0:
                 self.dx += 8
             Character.fb_dx = 0
             Character.wg_dx = 0
-
-            # if Character.fb_dx == 0 and \
-            # self.img_rect.colliderect((self.fb.rt_rect().x + Character.fb_dx, self.fb.rt_rect().y, self.fb.rt_img().get_width(), self.fb.rt_img().get_height())):
-            #
-            #         # self.img_rect.colliderect((wgrtx + wgdx, wgrty,
-            #         #                            wgrtimg.get_width(), wgrtimg.get_height())):
-            #     Character.fb_dx += -10
-            #     Character.wg_dx = 0
-            #     self.dx = 0
-            #     print(" w")
-            #
-            # if \
-            #                      self.img_rect.colliderect((self.wg.rt_rect().x + Character.wg_dx, self.wg.rt_rect().y, self.wg.rt_img().get_width(), self.wg.rt_img().get_height())):
-            #
-            #     # self.img_rect.colliderect((self.fb.rt_rect().x + Character.fb_dx, self.fb.rt_rect().y,
-            #         #                            self.fb.rt_img().get_width(), self.fb.rt_img().get_height())):
-            #     Character.fb_dx = 0
-            #     Character.wg_dx = 0
-            #     self.dx = 0
-            #     print("g")
 
         if self.rect.colliderect(c_rect_x, c_rect_y + c_dy, c_img.get_width(), c_img.get_height()):
             if c_momentum < 0:
@@ -87,7 +73,7 @@ class Push:
                 self.top_collision = True
                 c_rect.bottom = self.rect.top - c_dy
 
-        # pushable with block collision
+    def pushable_block_collision(self, block_list, c_type, c_rect_x, c_dx, c_rect_y, c_img):
         for block in block_list:
             if block.colliderect(self.rect.x + (self.dx + 2), self.rect.y, 34, 34):
                 self.dx = 0
@@ -95,22 +81,10 @@ class Push:
                 if self.rect.colliderect((c_rect_x + c_dx, c_rect_y, c_img.get_width(), c_img.get_height())):
                     if c_type == "fb":
                         Character.fb_dx = 0
-                        print("fb collided")
                     if c_type == "wg":
                         Character.wg_dx = 0
-                        print("wg collided")
-
-                # print(block.top)
 
                     # self.y_momentum = 0
-
-
-
-
-        self.rect.x += self.dx
-        screen.blit(self.block, self.rect)
-
-        return self.top_collision
 
     def rt_rect(self):
         return self.rect

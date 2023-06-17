@@ -17,13 +17,8 @@ class Character:
 
     fb_air_timer = 0
     wg_air_timer = 0
-
-
     def __init__(self):
         pass
-
-
-
 
 class FireBoy(Character):
     def __init__(self, x, y):
@@ -67,10 +62,35 @@ class FireBoy(Character):
             self.y_momentum = 12
         Character.fb_dy += self.y_momentum
 
-        bottom_collision = False
-
 
         # deals collision
+        self.deal_collision(blocks_list, push, speeder_group);
+
+
+        # method 2: decrease jump height #################################
+        # for speeder in speeder_group:
+        #     speeder_block_collision = speeder.turn_on("fb")
+        #
+        #
+        #
+        #     if bottom_collision or p_block_collision or vent_block_collision or speeder_block_collision:
+        #         self.y_momentum = 0
+        #         Character.fb_air_timer = 0
+        #     else:
+        #         Character.fb_air_timer += 1
+        #################################################################
+
+
+        self.rect.x += Character.fb_dx
+        self.rect.y += Character.fb_dy
+
+        game.screen.blit(self.fb, self.rect)
+
+        # pygame.draw.rect(game.screen, (255, 255, 255), self.rect, 2)
+
+    def deal_collision(self, blocks_list, push, speeder_group):
+        bottom_collision = False
+
         for block in blocks_list:
             if block.colliderect((self.rect.x + Character.fb_dx, self.rect.y, self.width, self.height)):
                 Character.fb_dx = 0
@@ -88,7 +108,6 @@ class FireBoy(Character):
                     bottom_collision = True
 
         p_block_collision = push.update(blocks_list, "fb")
-        # vent_block_collision = vent.turn_on("fb")
 
         for speeder in speeder_group:
             speeder_block_collision = speeder.turn_on("fb")
@@ -102,27 +121,6 @@ class FireBoy(Character):
         else:
             Character.fb_air_timer += 1
 
-        # method 2: decrease jump height #################################
-        # for speeder in speeder_group:
-        #     speeder_block_collision = speeder.turn_on("fb")
-        #
-        #
-        #
-        #     if bottom_collision or p_block_collision or vent_block_collision or speeder_block_collision:
-        #         self.y_momentum = 0
-        #         Character.fb_air_timer = 0
-        #     else:
-        #         Character.fb_air_timer += 1
-        #################################################################
-
-        # dy += self.y_momentum
-
-        self.rect.x += Character.fb_dx
-        self.rect.y += Character.fb_dy
-
-        game.screen.blit(self.fb, self.rect)
-
-        # pygame.draw.rect(game.screen, (255, 255, 255), self.rect, 2)
 
 
 class WaterGirl(Character):
@@ -166,10 +164,11 @@ class WaterGirl(Character):
             self.y_momentum = 12
         Character.wg_dy += self.y_momentum
 
-        bottom_collision = False
-
-
         # deals collision
+        self.deal_collision(blocks_list, push, speeder_group);
+
+    def deal_collision(self, blocks_list, push, speeder_group):
+        bottom_collision = False
         for block in blocks_list:
             if block.colliderect((self.rect.x + Character.wg_dx, self.rect.y, self.width, self.height)):
                 Character.wg_dx = 0
@@ -206,5 +205,3 @@ class WaterGirl(Character):
         self.rect.y += Character.wg_dy
 
         game.screen.blit(self.wg, self.rect)
-
-        # pygame.draw.rect(game.screen, (255, 255, 255), self.rect, 2)
