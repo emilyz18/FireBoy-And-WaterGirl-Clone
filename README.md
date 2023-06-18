@@ -15,12 +15,12 @@ Then run the main file:
 
 <table>
   <tr>
-    <td><img src="https://github.com/emilyz18/Stickman-and-StickWoman/blob/master/img/demo/menu.png?raw=true" alt= "menu" width=90% height=90%></td>
-    <td><img src="https://github.com/emilyz18/Stickman-and-StickWoman/blob/master/img/demo/lv1.png?raw=true" alt= "lv1" width=90% height=90%></td>
+    <td><img src="https://github.com/emilyz18/Stickman-and-StickWoman/blob/master/img/demo/menu.png?raw=true" alt= "menu">menu</td>
+    <td><img src="https://github.com/emilyz18/Stickman-and-StickWoman/blob/master/img/demo/lv1.png?raw=true" alt= "lv1">level 1</td>
   </tr>
   <tr>
-    <td><img src="https://github.com/emilyz18/Stickman-and-StickWoman/blob/master/img/demo/lv2.png?raw=true" alt= "lv2" width=90% height=90%></td>
-    <td><img src="https://github.com/emilyz18/Stickman-and-StickWoman/blob/master/img/demo/lv3.png?raw=true" alt= "lv3" width=90% height=90%></td>
+    <td><img src="https://github.com/emilyz18/Stickman-and-StickWoman/blob/master/img/demo/lv2.png?raw=true" alt= "lv2">level 2</td>
+    <td><img src="https://github.com/emilyz18/Stickman-and-StickWoman/blob/master/img/demo/lv3.png?raw=true" alt= "lv3">level 3</td>
   </tr> 
 </table>
 
