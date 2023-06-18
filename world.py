@@ -316,9 +316,9 @@ class World:
         self.draw_text("Coin: " + str(self.coin_score), pygame.font.SysFont("Bauhaus 93", 25), (255, 255, 255),
                        tile_size - 10, 10)
 
-        self.draw_text("Red: " + str(self.red_gem_score), pygame.font.SysFont("Bauhaus 93", 25), (255, 255, 255),
+        self.draw_text("Ruby: " + str(self.red_gem_score), pygame.font.SysFont("Bauhaus 93", 25), (255, 255, 255),
                        tile_size - 10, 50)
-        self.draw_text("Blue: " + str(self.blue_gem_score), pygame.font.SysFont("Bauhaus 93", 25), (255, 255, 255),
+        self.draw_text("Sapphire : " + str(self.blue_gem_score), pygame.font.SysFont("Bauhaus 93", 25), (255, 255, 255),
                        tile_size - 10, 90)
 
 

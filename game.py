@@ -56,23 +56,25 @@ class Game:
     def main_menu(self):
         while True:
             screen.blit(BG, (0, 0))
-            img = self.get_font(43).render("Hydrogirl and Lavaboy", True, (255, 255, 255))
+            img = self.get_font(43).render("Lavaboy and Hydrogirl", True, (255, 255, 255))
             game.screen.blit(img, (60, 90))
 
             MENU_MOUSE_POS = pygame.mouse.get_pos()
             font_size = 44
+            x_pos = 520
+            text_colour = "#EFE1D1"
 
 
-            lv1_button = Button(image=pygame.image.load("img/buttonLabel.png"), pos=(520, 265),
-                                text_input="Level 1", font=self.get_font(font_size), base_color="#d7fcd4",
+            lv1_button = Button(image=pygame.image.load("img/buttonLabel.png"), pos=(x_pos, 265),
+                                text_input="Level 1", font=self.get_font(font_size), base_color=text_colour,
                                 hovering_color="White")
 
-            lv2_button = Button(image=pygame.image.load("img/buttonLabel.png"), pos=(520, 415),
-                                text_input="Level 2", font=self.get_font(font_size), base_color="#d7fcd4",
+            lv2_button = Button(image=pygame.image.load("img/buttonLabel.png"), pos=(x_pos, 415),
+                                text_input="Level 2", font=self.get_font(font_size), base_color=text_colour,
                                 hovering_color="White")
 
-            lv3_button = Button(image=pygame.image.load("img/buttonLabel.png"), pos=(520, 555),
-                                text_input="Level 3", font=self.get_font(font_size), base_color="#d7fcd4",
+            lv3_button = Button(image=pygame.image.load("img/buttonLabel.png"), pos=(x_pos, 555),
+                                text_input="Level 3", font=self.get_font(font_size), base_color=text_colour,
                                 hovering_color="White")
 
             # screen.blit(MENU_TEXT, MENU_RECT)
